@@ -1,3 +1,4 @@
+-- Bruteforcer of the different possible starts for each seed
 -- Note: requires libTAS PRs that have not been merged yet as I push this. This will NOT work with libTAS 1.4.7
 
 local memscore = "" -- only stable starting from frame 3
