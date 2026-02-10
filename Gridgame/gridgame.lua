@@ -79,7 +79,7 @@ function onFrame()
          first_run = false
       end
    elseif f == 3 then
-      i = ramsearch.newsearch(9, 0, 1, 1, "==")
+      i = ramsearch.newsearch(9, 0, 1, 1, "==", 0, 7, "500000000000", "700000000000")
       if dbg then
          print(string.format("nb_results newsearch f3: %d", i))
       end
