@@ -27,6 +27,7 @@ function log(mess)
    end
    print(mess)
    file:write(mess .. "\n")
+   file:flush()
 end
 
 function end_session()
