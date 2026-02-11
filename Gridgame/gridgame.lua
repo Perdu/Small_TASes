@@ -39,21 +39,38 @@ function end_session()
    file:close()
 end
 
+function open_file()
+   file, err = io.open(string.format("gridgame/%d.txt", seed), "w")
+   if not file then
+      print("Failed to open file:", err)
+      return
+   end
+end
+
 function restart()
    nb_time_since_last_score_gain = 0
    memscore = ""
    cur_score = 0
    if use_random then
-      if nb_tries == MAX_TRIES_PER_SEED then
-         log(string.format("Best solution: %d at x = %d, y = %d", max_score, max_score_x, max_score_y))
-         end_session()
+      if max_score > 2000 then
+         -- promising seed, let's explore it fully
+         use_random = false
+         cur_x = 1
+         cur_y = 1
+         file:close()
+         open_file()
       else
-         repeat
-            cur_x = math.random(1, 16)
-            cur_y = math.random(1, 16)
-         until not used_x_y[cur_x .. "," .. cur_y]
-         used_x_y[cur_x .. "," .. cur_y] = true
-         nb_tries = nb_tries + 1
+         if nb_tries == MAX_TRIES_PER_SEED then
+            log(string.format("Best solution: %d at x = %d, y = %d", max_score, max_score_x, max_score_y))
+            end_session()
+         else
+            repeat
+               cur_x = math.random(1, 16)
+               cur_y = math.random(1, 16)
+            until not used_x_y[cur_x .. "," .. cur_y]
+            used_x_y[cur_x .. "," .. cur_y] = true
+            nb_tries = nb_tries + 1
+         end
       end
    else
       cur_x = cur_x + 1
@@ -80,11 +97,7 @@ function onStartup()
    end
    first_run = true
    seed = movie.getInitialSystemTime()
-   file, err = io.open(string.format("gridgame/%d.txt", seed), "w")
-   if not file then
-      print("Failed to open file:", err)
-      return
-   end
+   open_file()
 end
 
 function onInput()
