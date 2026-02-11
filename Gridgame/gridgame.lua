@@ -4,6 +4,8 @@
 local memscore = "" -- only stable starting from frame 3
 local cur_score = 0
 local dbg = false
+local use_random = true
+local MAX_TRIES_PER_SEED = 10
 
 ---- Constants
 MAX_TIME_BETWEEN_SCORE_GAIN = 9
@@ -17,6 +19,8 @@ cur_x = 1
 cur_y = 1
 first_run = true
 file = nil
+nb_tries = 0
+used_x_y = {}
 
 x_map = {17, 32, 52, 64, 80, 93, 111, 123, 135, 157, 170, 182, 200, 214, 233, 247}
 y_map = {18, 33, 47, 65, 75, 92, 106, 123, 139, 153, 168, 182, 198, 208, 228, 239}
@@ -39,13 +43,27 @@ function restart()
    nb_time_since_last_score_gain = 0
    memscore = ""
    cur_score = 0
-   cur_x = cur_x + 1
-   if cur_x == 17 then
-      cur_x = 1
-      cur_y = cur_y + 1
-      if cur_y == 17 then
+   if use_random then
+      if nb_tries == MAX_TRIES_PER_SEED then
          log(string.format("Best solution: %d at x = %d, y = %d", max_score, max_score_x, max_score_y))
          end_session()
+      else
+         repeat
+            cur_x = math.random(1, 16)
+            cur_y = math.random(1, 16)
+         until not used_x_y[cur_x .. "," .. cur_y]
+         used_x_y[cur_x .. "," .. cur_y] = true
+         nb_tries = nb_tries + 1
+      end
+   else
+      cur_x = cur_x + 1
+      if cur_x == 17 then
+         cur_x = 1
+         cur_y = cur_y + 1
+         if cur_y == 17 then
+            log(string.format("Best solution: %d at x = %d, y = %d", max_score, max_score_x, max_score_y))
+            end_session()
+         end
       end
    end
    runtime.loadState(1)
@@ -53,8 +71,13 @@ end
 
 function onStartup()
    nb_time_since_last_score_gain = 0
-   cur_x = 1
-   cur_y = 1
+   if use_random then
+      cur_x = math.random(1,16)
+      cur_y = math.random(1,16)
+   else
+      cur_x = 1
+      cur_y = 1
+   end
    first_run = true
    seed = movie.getInitialSystemTime()
    file, err = io.open(string.format("gridgame/%d.txt", seed), "w")
