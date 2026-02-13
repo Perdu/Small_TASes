@@ -4,11 +4,12 @@
 local memscore = "" -- only stable starting from frame 3
 local cur_score = 0
 local dbg = false
-local use_random = true
+local use_random = false
 local MAX_TRIES_PER_SEED = 10
 
 ---- Constants
 MAX_TIME_BETWEEN_SCORE_GAIN = 22
+KEY_r = 0x0072
 
 ---- Session vars
 max_score = 0
@@ -21,6 +22,7 @@ first_run = true
 file = nil
 nb_tries = 0
 used_x_y = {}
+install_next_try = 0
 
 x_map = {17, 32, 52, 64, 80, 93, 111, 123, 135, 157, 170, 182, 200, 214, 233, 247}
 y_map = {18, 33, 47, 65, 75, 92, 106, 123, 139, 153, 168, 182, 198, 208, 228, 239}
@@ -37,6 +39,7 @@ end
 function end_session()
    -- runtime.playPause()
    file:close()
+   runtime.exit()
 end
 
 function open_file()
@@ -47,9 +50,11 @@ function open_file()
    end
 end
 
-function restart()
+function restart(reload)
    nb_time_since_last_score_gain = 0
-   memscore = ""
+   if reload then
+      memscore = ""
+   end
    cur_score = 0
    if use_random then
       if max_score > 2000 then
@@ -83,7 +88,14 @@ function restart()
          end
       end
    end
-   runtime.loadState(1)
+   if reload then
+      if dbg then
+         print("loading state 1")
+      end
+      runtime.loadState(1)
+   else
+      install_next_try = 1
+   end
 end
 
 function onStartup()
@@ -104,6 +116,25 @@ function onInput()
    local f = movie.currentFrame()
    if f == 1 then
       input.setMouseCoords(x_map[cur_x], y_map[cur_y], 0)
+   end
+   if install_next_try ~= 2 then
+      -- for some reason you're able to click while a chain reaction
+      -- is happening (which resets score)
+      input.setMouseButtons(0, 0)
+   end
+   if f == 2 then
+      input.setMouseButtons(0, 1)
+   end
+   if install_next_try == 1 then
+      input.setMouseCoords(x_map[cur_x], y_map[cur_y], 0)
+      input.setKey(KEY_r, 1)
+      install_next_try = 2
+   elseif install_next_try == 2 then
+      input.setMouseButtons(0, 1)
+      install_next_try = 0
+   end
+   if install_next_try ~= 2 then
+      input.setKey(KEY_r, 0)
    end
 end
 
@@ -132,15 +163,16 @@ function onFrame()
       if i == 1 then
          memscore = ramsearch.get_address(0)
       else
+         print("didn't find mem address")
          log(string.format("%d,%d: 1", cur_x, cur_y))
-         restart()
+         restart(true)
       end
    end
    if memscore ~= "" then
-      local score_num = tonumber(memscore, 16)
-      local score = memory.readd(score_num)
+      local score = memory.readd(tonumber(memscore, 16))
       if score == cur_score then
          nb_time_since_last_score_gain = nb_time_since_last_score_gain + 1
+         -- print(nb_time_since_last_score_gain)
          if (nb_time_since_last_score_gain == MAX_TIME_BETWEEN_SCORE_GAIN) then
             local ok, result = pcall(string.format, "%d,%d: %d", cur_x, cur_y, score)
             if ok then
@@ -153,7 +185,7 @@ function onFrame()
             else
                log(string.format("%d,%d: buggy result", cur_x, cur_y))
             end
-            restart()
+            restart(false)
          end
       else
          nb_time_since_last_score_gain = 0
