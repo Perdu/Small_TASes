@@ -8,7 +8,7 @@ local use_random = true
 local MAX_TRIES_PER_SEED = 10
 
 ---- Constants
-MAX_TIME_BETWEEN_SCORE_GAIN = 9
+MAX_TIME_BETWEEN_SCORE_GAIN = 22
 
 ---- Session vars
 max_score = 0
