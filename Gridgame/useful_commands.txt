@@ -3,3 +3,6 @@ libTAS -i -L -r /home/gridgame.ltm --lua lua/gridgame.lua /usr/local/bin/ruffle_
 
 Follow progress:
 wc -l volume/gridgame/*.txt | grep total && grep Best volume/gridgame/*.txt | cut -d ':' -f 3 | sort -n | tail -n 10
+
+Restarting the crashed ones:
+for i in $(grep -L Best gridgame/*.txt | cut -d '/' -f 2 | cut -d '.' -f 1) ; do echo "doing $i"; timeout 240 xvfb-run -a libTAS -i -n -t "$i" -L -r /home/gridgame.ltm --lua lua/gridgame.lua /usr/local/bin/ruffle_desktop -g gl --no-gui /home/gridgame_patched.swf ; done
