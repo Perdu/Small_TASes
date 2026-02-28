@@ -70,6 +70,18 @@ function getAccel()
    vNew = (xOld - xNew) / fps.speedFactor;
 }
 ```
+with:
+```
+   wind = 1.5;
+   springStrength = 15;
+   weight = 1;
+   sway = 0;
+   slapSpeed = 50;
+   bigSlapSpeed = 200;
+   offScreenX = -200;
+
+```
+
 and:
 ```
 onClipEvent(enterFrame){
