@@ -1,0 +1,32 @@
+(Updated prompt with relevant information, in order to have some basis to do the same for other games. Note that this involved way more prompting than this. The swf file was included with this)
+
+I want a bruteforcer for this flash game, in order to find the best score (longest chain) in a single click.
+Write a bruteforcer in C, reimplementing the engine in the process. Be careful about the fact that cells desyncs due to how flash handles execution order (it's not a simple cellular automata doing operations step by step).
+The solution must be runnable through libTAS + Ruffle.
+Dig into how Ruffle implements calls to the random function in the version I'm using.
+A good strategy for the bruteforcer would be to make a few attempts on random grids, then do a full grid search when a long chain (> 1000) is found in one of them.
+
+- I'm using ruffle Ruffle 0.2.0-nightly.2026.5.15-nightly (69afbe077a11dcdf44af307a85eedbe4bc314352 2026-05-15)
+- libTAS 1.4.7
+- best score is best cascade after a single click
+- the seed is the system time in libTAS. It does change the board when modified. "seed 1" means starting with a system time of 1 second in libTAS (1970-01-01T00:00:01Z).
+- I'm using libTAS setting "clock_gettime() monotonic"
+- Note that the RNG seed is not directly the system time. You found that it was called after 83333 nsec.
+
+Oracle for seed 1: (0 = NW, 1 = NE, 2 = SE, 3 = SW)
+Row 0: 0 0 0 3 1 0 3 2 3 1 1 3 1 0 1 3
+Row 1: 2 2 2 1 2 1 3 0 0 3 1 0 3 0 3 3
+Row 2: 0 1 1 2 0 3 1 2 3 0 3 0 0 3 3 2
+Row 3: 3 1 1 2 1 1 0 0 1 0 3 0 1 3 1 3
+Row 4: 1 2 2 0 3 0 3 1 2 1 1 1 0 3 1 1
+Row 5: 1 1 1 3 3 2 2 0 0 2 1 0 2 2 3 0
+Row 6: 3 1 0 0 2 3 1 1 2 3 3 1 3 1 2 2
+
+Chain lengths for seed 1:
+Row 0: 6 5 4 1 262 262 1 8 8 1 115 190 2 1 3 3
+
+Oracle for seed 2 (remember it's possible I made a few mistakes):
+Row 0: 1 0 2 0 0 2 2 3 2 2 1 3 0 3 1 2
+Row 1: 1 2 0 3 3 0 1 3 1 0 3 3 3 1 0 2
+Row 2: 0 1 2 0 0 0 0 1 2 0 3 3 0 1 1 3
+Row 3: 0 3 0 1 2 0 3 1 2 3 0 0 3 3 0 0
