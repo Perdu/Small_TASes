@@ -10,6 +10,19 @@ onClipEvent(enterFrame){
          y2 = random(range) + this._height / 2;
          x = random(60) + 1;
          ySpeed = (y2 - y1) / x;
+         _root.dbgEvent++;
+         trace("BC_RETARGET"
+            + " e=" + _root.dbgEvent
+            + " f=" + _root.dbgFrame
+            + " y=" + this._y
+            + " h=" + this._height
+            + " y1=" + y1
+            + " y2=" + y2
+            + " range=" + range
+            + " rng_target=" + (y2 - this._height / 2)
+            + " x=" + x
+            + " rng_duration=" + (x - 1)
+            + " yspeed=" + ySpeed);
       }
       this._y += ySpeed;
       if(180 < this._height)

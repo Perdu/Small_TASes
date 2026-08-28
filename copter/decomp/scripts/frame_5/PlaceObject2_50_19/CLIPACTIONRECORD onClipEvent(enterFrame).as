@@ -1,4 +1,23 @@
 onClipEvent(enterFrame){
+   _root.dbgFrame++;
+   _root.dbgEvent++;
+   trace("HELI_PRE"
+      + " e=" + _root.dbgEvent
+      + " f=" + _root.dbgFrame
+      + " x=" + this._x
+      + " y=" + this._y
+      + " w=" + this._width
+      + " h=" + this._height
+      + " xspeed=" + xspeed
+      + " yspeed=" + yspeed
+      + " fly=" + fly
+      + " gravity=" + gravity
+      + " friction=" + friction
+      + " broken=" + broken
+      + " crashed=" + crashed
+      + " scrollStart=" + scrollStart
+      + " localScroll=" + scrollSpeed
+      + " rootScroll=" + _root.scrollSpeed);
    if(broken != true)
    {
       scrollSpeed = this._x / _root.mainGround.ground._width * maxScrollSpeed + 2;
@@ -28,6 +47,15 @@ onClipEvent(enterFrame){
       yspeed *= friction;
       if(_Y + yspeed + _height / 2 >= _root.wall1._y)
       {
+         _root.dbgEvent++;
+         trace("HELI_FLOOR_COLLISION"
+            + " e=" + _root.dbgEvent
+            + " f=" + _root.dbgFrame
+            + " y=" + _Y
+            + " nextY=" + (_Y + yspeed)
+            + " yspeed=" + yspeed
+            + " heli_h=" + _height
+            + " floor_y=" + _root.wall1._y);
          _Y = _root.wall1._y - _height / 2;
          broken = true;
          yspeed = 0;
@@ -37,6 +65,15 @@ onClipEvent(enterFrame){
       }
       else if(_root.wall3._y >= _Y + yspeed - _height / 2)
       {
+         _root.dbgEvent++;
+         trace("HELI_CEILING_COLLISION"
+            + " e=" + _root.dbgEvent
+            + " f=" + _root.dbgFrame
+            + " y=" + _Y
+            + " nextY=" + (_Y + yspeed)
+            + " yspeed=" + yspeed
+            + " heli_h=" + _height
+            + " ceil_y=" + _root.wall3._y);
          _Y = _root.wall3._y + _height / 2;
          yspeed = - yspeed;
       }
@@ -60,6 +97,20 @@ onClipEvent(enterFrame){
       }
       xspeed *= friction;
    }
+   _root.dbgEvent++;
+   trace("HELI_POST"
+      + " e=" + _root.dbgEvent
+      + " f=" + _root.dbgFrame
+      + " x=" + this._x
+      + " y=" + this._y
+      + " xspeed=" + xspeed
+      + " yspeed=" + yspeed
+      + " fly=" + fly
+      + " gravity=" + gravity
+      + " broken=" + broken
+      + " crashed=" + crashed
+      + " scrollStart=" + scrollStart
+      + " localScroll=" + scrollSpeed);
    if(_root.restart == true)
    {
       this.removeMovieClip();

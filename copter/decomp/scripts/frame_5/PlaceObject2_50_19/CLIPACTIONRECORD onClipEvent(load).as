@@ -14,4 +14,16 @@ onClipEvent(load){
    downSound.attachSound("downSound");
    upSound.setVolume(50);
    downSound.setVolume(100);
+   _root.dbgEvent++;
+   trace("HELI_LOAD"
+      + " e=" + _root.dbgEvent
+      + " f=" + _root.dbgFrame
+      + " x=" + this._x
+      + " y=" + this._y
+      + " w=" + this._width
+      + " h=" + this._height
+      + " gravity=" + gravity
+      + " friction=" + friction
+      + " scrollStart=" + scrollStart
+      + " maxScroll=" + maxScrollSpeed);
 }
