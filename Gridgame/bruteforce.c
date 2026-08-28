@@ -335,8 +335,8 @@ int main(int argc, char **argv) {
             if (grid_best >= threshold) {
                 uint64_t ss, sn;
                 start_time_for_seed(seed, &ss, &sn);
-                fprintf(stderr, "threshold hit: start=%" PRIu64 "s,%" PRIu64 "nsec score=%" PRIu64 "; exhaustive 256 clicks\n",
-                        ss, sn, grid_best);
+                //fprintf(stderr, "threshold hit: start=%" PRIu64 "s,%" PRIu64 "nsec score=%" PRIu64 "; exhaustive 256 clicks\n",
+                //        ss, sn, grid_best);
                 for (int click = 0; click < CELLS; ++click) {
                     uint64_t s = simulate(board, click, frame_cap, score_cap);
                     if (s > best_score) {
