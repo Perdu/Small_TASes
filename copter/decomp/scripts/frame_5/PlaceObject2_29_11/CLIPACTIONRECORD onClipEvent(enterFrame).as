@@ -1,4 +1,12 @@
 onClipEvent(enterFrame){
+   _root.dbgEvent++;
+   trace("BC_TICK"
+      + " e=" + _root.dbgEvent
+      + " f=" + _root.dbgFrame
+      + " y=" + this._y
+      + " h=" + this._height
+      + " ys=" + ySpeed
+      + " y2=" + y2);
    if(_root.helicopter.scrollStart == true)
    {
       y1 = this._y;

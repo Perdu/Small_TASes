@@ -1,7 +1,39 @@
 onClipEvent(enterFrame){
    if(this._name != "wallBlock" && _root.helicopter.scrollStart == true)
    {
+      if(this._x >= 100 && this._x <= 180)
+      {
+         _root.dbgEvent++;
+         trace("MOVING_PRE"
+            + " e=" + _root.dbgEvent
+            + " f=" + _root.dbgFrame
+            + " src=PO28_9"
+            + " name=" + this._name
+            + " x=" + this._x
+            + " y=" + this._y
+            + " w=" + this._width
+            + " h=" + this._height
+            + " heli_x=" + _root.helicopter._x
+            + " heli_y=" + _root.helicopter._y
+            + " heli_vy=" + _root.helicopter.yspeed);
+      }
       this._x -= scrollSpeed;
+      if(this._x >= 100 && this._x <= 180)
+      {
+         _root.dbgEvent++;
+         trace("MOVING_POST"
+            + " e=" + _root.dbgEvent
+            + " f=" + _root.dbgFrame
+            + " src=PO28_9"
+            + " name=" + this._name
+            + " x=" + this._x
+            + " y=" + this._y
+            + " w=" + this._width
+            + " h=" + this._height
+            + " heli_x=" + _root.helicopter._x
+            + " heli_y=" + _root.helicopter._y
+            + " heli_vy=" + _root.helicopter.yspeed);
+      }
       if(this.hitTest(_root.helicopter))
       {
          _root.dbgEvent++;

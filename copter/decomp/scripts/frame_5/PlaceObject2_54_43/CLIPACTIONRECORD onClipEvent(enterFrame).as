@@ -1,4 +1,8 @@
 onClipEvent(enterFrame){
+   _root.dbgEvent++;
+   trace("OBSGEN_TICK"
+      + " e=" + _root.dbgEvent
+      + " f=" + _root.dbgFrame);
    if(_root.helicopter.scrollStart == true)
    {
       if(flag == false)
