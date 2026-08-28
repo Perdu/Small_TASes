@@ -1,0 +1,26 @@
+In this game, the goal is to trigger the longest chain reaction. Once you click on a cell, you can no longer click on any of them before they all stop moving. The chain reaction and the soothing sfx make it a relaxing game. You can play the game is various places, for instance [https://flashmuseum.org/grid-game/|here].
+
+!!! Comments
+
+For my last submission, I spent roughly a week instrumenting and patching libTAS in order to bruteforce 1.3 million possibilities in 5500 grids.
+But we're mid-2026. AI is now sufficiently advanced to be able to fully reimplement the game in C with a few prompting (or, to be fair: a LOT of prompting and frustration about how stupid it is despite its capabilities), along with a complete bruteforcer.
+Thanks to this, I was able to bruteforce over a billion grids in less than 24 hours. While the last bruteforce barely found a solution hitting the 4000 cap, I found many solutions over 5000, and a best solution of 5800.
+In order to find the best grid, I used the strategy of making a few attempts on each grids, then performing a full search for the grid when one of them is below a certain threshold (2000 or 3000, I did some tweaking during the bruteforce). I ran several bruteforcers in parallel tweaking these parameters (from one doing an extensive search on all grids to one aggressively cycling through grids).
+
+The resulting solution is an elegant grid with almost no unreachable cell which finishes visually pretty well sorted.
+
+The bruteforcer code is [https://github.com/Perdu/Small_TASes/tree/main/Gridgame|on Github], along with documentation regarding the RNG used by Ruffle.
+
+!!! Potential screenshots:
+[https://ploudseeker.com/files/gridgame2.jpg]
+
+!!! Potential optimizations
+
+There should be roughly 2 billions possible grids (2^31) due to the way the seed is constructed. While I used a time-efficient strategy to cycle through grids to quickly find the most promising ones, an extensive search of the whole address space should be doable in reasonable time (several days/weeks of computation). I doubt, however, that the best result would be significantly higher than the current solution.
+
+!!! Emulation
+* libtas v1.4.6
+* ruffle 69afbe077a11dcdf44af307a85eedbe4bc314352 2026-05-15 (ruffle-nightly-2026-05-15)
+* e2a107843f69f3f8c85310e97bc1b48b gridgame.swf
+* https://www.minijuegosgratis.com/flash1234/no_hotlink/gridgame.swf
+* FPS: 24
