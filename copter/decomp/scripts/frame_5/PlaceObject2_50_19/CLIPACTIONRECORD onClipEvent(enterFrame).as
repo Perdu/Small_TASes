@@ -1,4 +1,17 @@
 onClipEvent(enterFrame){
+   _root.dbgEvent++;
+   trace("HB_PRE"
+      + " e=" + _root.dbgEvent
+      + " f=" + _root.dbgFrame
+      + " cf=" + this._currentframe
+      + " tf=" + this._totalframes
+      + " rot=" + this._rotation
+      + " x=" + this._x
+      + " y=" + this._y
+      + " w=" + this._width
+      + " h=" + this._height
+      + " vy=" + yspeed
+      + " fly=" + fly);
    _root.dbgFrame++;
    _root.dbgEvent++;
    trace("HELI_PRE"
@@ -111,6 +124,19 @@ onClipEvent(enterFrame){
       + " crashed=" + crashed
       + " scrollStart=" + scrollStart
       + " localScroll=" + scrollSpeed);
+   _root.dbgEvent++;
+   trace("HB_POST"
+      + " e=" + _root.dbgEvent
+      + " f=" + _root.dbgFrame
+      + " cf=" + this._currentframe
+      + " tf=" + this._totalframes
+      + " rot=" + this._rotation
+      + " x=" + this._x
+      + " y=" + this._y
+      + " w=" + this._width
+      + " h=" + this._height
+      + " vy=" + yspeed
+      + " fly=" + fly);
    if(_root.restart == true)
    {
       this.removeMovieClip();
