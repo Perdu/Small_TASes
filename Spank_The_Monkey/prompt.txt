@@ -1,0 +1,13 @@
+Prompt for the 09-2026 improvement:
+
+Figure out whether this TAS can be improved. The goal is to get the highest possible score. Decompile the swf to understand whether a better score can be reached, as indicated in the submission notes. If you figure out a way, edit the ltm file to implement it, then test it against libTAS + ruffle (attached)
+
+Attached files:
+- monkey.swf
+- spank_the_monkey.ltm
+- submission.txt
+- submission2.txt
+- libtas.so
+- libtas32.so
+- libTAS
+- ruffle
